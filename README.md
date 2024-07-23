@@ -4,16 +4,20 @@
 
 > This is a \*\*Sanity Studio V3 dashboard widget plugin
 
-This plugin allows you to import a github repository into your Sanity Studio CMS with just a click of a button. 
+This plugin allows you to import a github repository into your Sanity Studio CMS with just a click of a button.
 
 ![alt text](<Dashboard _ vinceflores_ca.jpeg>)
 
 ## Requirements
+
 if `@sanity/dashboard` has not been installed.
+
 ```
 npm i @sanity/dashboard
 ```
-or 
+
+or
+
 ```
 yarn add @sanity/dashboard
 ```
@@ -93,9 +97,10 @@ export const schemaTypes = [
 
 ```
 
+> ###### Note: Be careful with your environment variables as `SANITY_STUDIO` prefix may expose them in the client side. Please refer to [sanity docs](https://www.sanity.io/docs/environment-variables)
+>
+> Copy into `utils.ts` to initialize necessary clients
 
-> ###### Note: Be careful with your environment variables as `SANITY_STUDIO` prefix may expose them in the client side. Please refer to [sanity docs](https://www.sanity.io/docs/environment-variables) 
-Copy into `utils.ts` to initialize necessary clients
 ```ttypescripts
 //utils.ts
 import {createClient} from '@sanity/client'
@@ -136,6 +141,16 @@ export default defineConfig({
       widgets: [
         ...,
         // Add here
+        GithubReposListWidget({
+          sanityClient,
+          graphqlWithAuth,
+          login: "GITHUB_USERNAME",
+          first: 5,
+          layout: {
+            width: "auto",
+            height: "auto"
+          }
+        }),
       ],
     }),
   ],
@@ -144,19 +159,15 @@ export default defineConfig({
 
 ## Configuration
 
-
-|Name |Description |Type|
-|-----|------------| ---------------------------------| 
-|cleint | The sanity client instance to be used to perform queries. | SanityClient|
-|first| The first `n` repositories to be fetched `Default = 15 `. | number | 
-|graphqlWithAuth | The octokit client used to fetch github's graphql api. | graphql |
-|login | The github login, for example 'vinceflores' | string
-|isFork | Determines if a repository is a fork | boolean |
-|visibility| The visibility of the repository. 'PUBLIC' or 'PRIVATE' | string |
-|layout | Configures the `width` and `height` of the widget | `width`/`height` : ['auto', 'full', 'large', 'small', 'medium' ]  | 
-
-  
-
+| Name            | Description                                               | Type                                                             |
+| --------------- | --------------------------------------------------------- | ---------------------------------------------------------------- |
+| cleint          | The sanity client instance to be used to perform queries. | SanityClient                                                     |
+| first           | The first `n` repositories to be fetched `Default = 15 `. | number                                                           |
+| graphqlWithAuth | The octokit client used to fetch github's graphql api.    | graphql                                                          |
+| login           | The github login, for example 'vinceflores'               | string                                                           |
+| isFork          | Determines if a repository is a fork                      | boolean                                                          |
+| visibility      | The visibility of the repository. 'PUBLIC' or 'PRIVATE'   | string                                                           |
+| layout          | Configures the `width` and `height` of the widget         | `width`/`height` : ['auto', 'full', 'large', 'small', 'medium' ] |
 
 ## License
 
@@ -169,7 +180,6 @@ with default configuration for build & watch scripts.
 
 See [Testing a plugin in Sanity Studio](https://github.com/sanity-io/plugin-kit#testing-a-plugin-in-sanity-studio)
 on how to run this plugin with hotreload in the studio.
-
 
 ### Release new version
 
