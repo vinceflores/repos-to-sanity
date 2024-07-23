@@ -74,7 +74,6 @@
     "typescript": "^5.5.3"
   },
   "peerDependencies": {
-    "@octokit/graphql": "^8.1.1",
     "react": "^18",
     "sanity": "^3"
   },
