@@ -132,6 +132,7 @@ import {sanityClient,graphqlWithAuth } from '@/utils.ts'
 import {
   dashboardTool,
 } from '@sanity/dashboard'
+import {GithubReposListWidget} from 'repos-to-sanity'
 
 export default defineConfig({
   //...
@@ -140,7 +141,7 @@ export default defineConfig({
     dashboardTool({
       widgets: [
         ...,
-        // Add here
+        // Example Here
         GithubReposListWidget({
           sanityClient,
           graphqlWithAuth,

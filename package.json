@@ -1,6 +1,6 @@
 {
   "name": "repos-to-sanity",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Load your list of repositories into a dashboard widget in sanityio",
   "keywords": [
     "sanity",
