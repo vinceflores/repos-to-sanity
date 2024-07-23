@@ -1,6 +1,22 @@
-# sanity-plugin-repos-to-sanity
+> This is a **Sanity Studio v3** plugin.
 
-> This is a **Sanity Studio V3 dashboard widget plugin
+# repos-to-sanity
+
+> This is a \*\*Sanity Studio V3 dashboard widget plugin
+
+This plugin allows you to import a github repository into your Sanity Studio CMS with just a click of a button. 
+
+![alt text](<Dashboard _ vinceflores_ca.jpeg>)
+
+## Requirements
+if `@sanity/dashboard` has not been installed.
+```
+npm i @sanity/dashboard
+```
+or 
+```
+yarn add @sanity/dashboard
+```
 
 ## Installation
 
@@ -11,8 +27,11 @@ yarn add repos-to-sanity @octokit/graphql @sanity/client @tanstack/react-query
 ```
 
 ## Usage
+
 Add the repo schema into `repo.ts` and add it to your list of schemaTypes
+
 ```typescript
+// repo.ts
 import {defineField, defineType} from 'sanity'
 
 export default defineType({
@@ -61,34 +80,42 @@ export default defineType({
     }),
   ],
 })
-
 ```
 
 ```typescript
-#index.ts
+// index.ts
 
 import repo from 'repo.ts'
 export const schemaTypes = [
   ...,
   repo
-] 
+]
 
 ```
 
-Inside `utils.ts` initialize the following
 
+> ###### Note: Be careful with your environment variables as `SANITY_STUDIO` prefix may expose them in the client side. Please refer to [sanity docs](https://www.sanity.io/docs/environment-variables) 
+Copy into `utils.ts` to initialize necessary clients
 ```ttypescripts
-  
-  import {graphql} from '@octokit/graphql'
-  
-  // sanity client
+//utils.ts
+import {createClient} from '@sanity/client'
+import {graphql} from '@octokit/graphql'
 
-  // github graphql with auth
-  export const graphqlWithAuth = graphql.defaults({
+// sanity client
+export const sanityClient = createClient({
+  projectId: process.env.SANITY_STUDIO_PROJECT_ID,
+  dataset: process.env.SANITY_STUDIO_.DATASET,
+  useCdn: false, // set to `false` to bypass the edge cache
+  apiVersion: '2023-05-03', // use current date (YYYY-MM-DD) to target the latest API version
+  token: process.env.SANITY_STUDIO_.SANITY_SECRET_TOKEN
+})
+
+// github graphql with auth
+export const graphqlWithAuth = graphql.defaults({
       headers: {
         authorization: 'bearer ' + process.env.SANITY_STUDIO_GITHUB_TOKEN,
       },
-  })
+})
 
 ```
 
@@ -96,6 +123,10 @@ Add it as a widget within `dashboard` in `sanity.config.ts` (or .js):
 
 ```typescript
 import {defineConfig} from 'sanity'
+import {sanityClient,graphqlWithAuth } from '@/utils.ts'
+import {
+  dashboardTool,
+} from '@sanity/dashboard'
 
 export default defineConfig({
   //...
@@ -103,13 +134,29 @@ export default defineConfig({
     ...,
     dashboardTool({
       widgets: [
-        ..., 
-        // Add here 
+        ...,
+        // Add here
       ],
     }),
   ],
 })
 ```
+
+## Configuration
+
+
+|Name |Description |Type|
+|-----|------------| ---------------------------------| 
+|cleint | The sanity client instance to be used to perform queries. | SanityClient|
+|first| The first `n` repositories to be fetched `Default = 15 `. | number | 
+|graphqlWithAuth | The octokit client used to fetch github's graphql api. | graphql |
+|login | The github login, for example 'vinceflores' | string
+|isFork | Determines if a repository is a fork | boolean |
+|visibility| The visibility of the repository. 'PUBLIC' or 'PRIVATE' | string |
+|layout | Configures the `width` and `height` of the widget | `width`/`height` : ['auto', 'full', 'large', 'small', 'medium' ]  | 
+
+  
+
 
 ## License
 
@@ -122,3 +169,11 @@ with default configuration for build & watch scripts.
 
 See [Testing a plugin in Sanity Studio](https://github.com/sanity-io/plugin-kit#testing-a-plugin-in-sanity-studio)
 on how to run this plugin with hotreload in the studio.
+
+
+### Release new version
+
+Run ["CI & Release" workflow](TODO/actions/workflows/main.yml).
+Make sure to select the main branch and check "Release new version".
+
+Semantic release will only release on configured branches, so it is safe to run release on any branch.
