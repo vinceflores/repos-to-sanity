@@ -136,8 +136,8 @@ jobs:
             - uses: actions/setup-node@v4
               with:
                 node-version: 16
-                registry-url: https://npm.pkg.github.com/
-            - run: npm ci --legacy-peer-
+                registry-url: https://registry.npmjs.org
+            - run: npm ci --legacy-peer-deps
             - run: npm publish
               env:
                 NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
