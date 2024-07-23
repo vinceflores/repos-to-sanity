@@ -8,9 +8,12 @@
   ],
   "license": "MIT",
   "author": "vinceflores <vincegabriel.flores@gmail.com>",
-  "repository": "https://github.com/vinceflores/repos-to-sanity.git",
+  "repository": {
+    "url": "https://github.com/vinceflores/repos-to-sanity.git"
+  },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
   },
   "sideEffects": false,
   "type": "commonjs",
