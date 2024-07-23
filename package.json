@@ -12,7 +12,7 @@
     "url": "https://github.com/vinceflores/repos-to-sanity.git"
   },
   "publishConfig": {
-    "registry": "https://github.com/vinceflores/repos-to-sanity.git",
+    "registry": "https://npm.pkg.github.com",
     "access": "public"
   },
   "sideEffects": false,
